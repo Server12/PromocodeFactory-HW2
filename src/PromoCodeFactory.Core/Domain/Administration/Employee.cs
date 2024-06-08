@@ -13,6 +13,6 @@ namespace PromoCodeFactory.Core.Domain.Administration
 
         public List<Role> Roles { get; set; }
 
-        public int AppliedPromocodesCount { get; set; }
+        public int AppliedPromocodesCount { get; set; } = 0;
     }
 }

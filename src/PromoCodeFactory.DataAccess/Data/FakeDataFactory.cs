@@ -17,7 +17,7 @@ namespace PromoCodeFactory.DataAccess.Data
                 LastName = "Сергеев",
                 Roles = new List<Role>()
                 {
-                    Roles.FirstOrDefault(x => x.Name == "Admin")  
+                    Roles.FirstOrDefault(x => x.Type == RoleType.Administrator)
                 },
                 AppliedPromocodesCount = 5
             },
@@ -29,7 +29,7 @@ namespace PromoCodeFactory.DataAccess.Data
                 LastName = "Андреев",
                 Roles = new List<Role>()
                 {
-                    Roles.FirstOrDefault(x => x.Name == "PartnerManager")  
+                    Roles.FirstOrDefault(x => x.Type == RoleType.PartnerManager)
                 },
                 AppliedPromocodesCount = 10
             },
@@ -40,15 +40,17 @@ namespace PromoCodeFactory.DataAccess.Data
             new Role()
             {
                 Id = Guid.Parse("53729686-a368-4eeb-8bfa-cc69b6050d02"),
-                Name = "Admin",
+                Type = RoleType.Administrator,
                 Description = "Администратор",
             },
             new Role()
             {
                 Id = Guid.Parse("b0ae7aac-5493-45cd-ad16-87426a5e7665"),
-                Name = "PartnerManager",
+                Type = RoleType.PartnerManager,
                 Description = "Партнерский менеджер"
             }
         };
+        
+       
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Role : BaseEntity
     {
-        public string Name { get; set; }
+        public RoleType Type { get; set; }
 
         public string Description { get; set; }
     }

@@ -1,13 +1,21 @@
 ﻿using System;
+using PromoCodeFactory.Core.Domain.Administration;
 
 namespace PromoCodeFactory.WebHost.Models
 {
     public class RoleItemResponse
     {
-        public Guid Id { get; set; }
+        public RoleItemResponse(Role role)
+        {
+            Id = role.Id;
+            Type = role.Type;
+            Description = role.Description;
+        }
 
-        public string Name { get; set; }
+        public Guid Id { get; }
 
-        public string Description { get; set; }
+        public RoleType Type { get; }
+
+        public string Description { get; }
     }
 }

@@ -32,12 +32,7 @@ namespace PromoCodeFactory.WebHost.Controllers
             var roles = await _rolesRepository.GetAllAsync();
 
             var rolesModelList = roles.Select(x =>
-                new RoleItemResponse()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description
-                }).ToList();
+                new RoleItemResponse(x)).ToList();
 
             return rolesModelList;
         }

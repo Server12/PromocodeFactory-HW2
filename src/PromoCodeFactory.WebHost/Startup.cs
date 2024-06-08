@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,10 +14,15 @@ namespace PromoCodeFactory.WebHost
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddSingleton(typeof(IRepository<Employee>), (x) => 
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                var enumConverter = new JsonStringEnumConverter();
+                options.JsonSerializerOptions.Converters.Add(enumConverter);
+            });
+
+            services.AddSingleton(typeof(IRepository<Employee>), (x) =>
                 new InMemoryRepository<Employee>(FakeDataFactory.Employees));
-            services.AddSingleton(typeof(IRepository<Role>), (x) => 
+            services.AddSingleton(typeof(IRepository<Role>), (x) =>
                 new InMemoryRepository<Role>(FakeDataFactory.Roles));
 
             services.AddOpenApiDocument(options =>
@@ -38,19 +44,13 @@ namespace PromoCodeFactory.WebHost
             }
 
             app.UseOpenApi();
-            app.UseSwaggerUi(x =>
-            {
-                x.DocExpansion = "list";
-            });
-            
+            app.UseSwaggerUi(x => { x.DocExpansion = "list"; });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

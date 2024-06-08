@@ -4,25 +4,44 @@ using System.Linq;
 using System.Threading.Tasks;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain;
+
 namespace PromoCodeFactory.DataAccess.Repositories
 {
-    public class InMemoryRepository<T>: IRepository<T> where T: BaseEntity
+    public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity, new()
     {
-        protected IEnumerable<T> Data { get; set; }
+        private readonly IList<T> Data;
 
-        public InMemoryRepository(IEnumerable<T> data)
+        public InMemoryRepository(IList<T> data)
         {
             Data = data;
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return Task.FromResult(Data);
+            return await Task.FromResult(Data);
         }
 
-        public Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByPredicate(Predicate<T> predicate)
         {
-            return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
+            return await Task.FromResult(Data.FirstOrDefault(entity => predicate(entity)));
+        }
+
+        public async Task<T> GetByIdAsync(Guid id)
+        {
+            return await Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
+        }
+
+        public async Task<T> AddAsync(T entity)
+        {
+            Data.Add(entity);
+            return await Task.FromResult(entity);
+        }
+
+        public async Task<T> DeleteAsync(Guid guid)
+        {
+            var entity = await GetByIdAsync(guid);
+            Data.Remove(entity);
+            return entity;
         }
     }
 }
